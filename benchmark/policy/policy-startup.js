@@ -16,8 +16,7 @@ const bench = common.createBenchmark(main, configs, options);
 function main(conf) {
   const hash = (str, algo) => {
     const hash = require('crypto').createHash(algo);
-    hash.update(str);
-    return hash.digest('base64');
+    return hash.update(str).digest('base64');
   };
   const resources = Object.fromEntries(
     // Simulate graph of 1k modules
