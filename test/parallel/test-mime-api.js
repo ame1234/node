@@ -24,7 +24,6 @@ for (const key of Object.keys(mime_descriptors)) {
 }
 
 
-
 assert.strictEqual(JSON.stringify(mime), JSON.stringify('application/ecmascript'));
 assert.strictEqual(`${mime}`, 'application/ecmascript');
 assert.strictEqual(mime.type, 'application');
@@ -85,21 +84,21 @@ assert.strictEqual(`${mime}`, 'text/javascript;charset=utf-8');
 params.set('goal', 'module');
 assert.strictEqual(params.has('goal'), true);
 assert.strictEqual(params.get('goal'), 'module');
-assert.deepStrictEqual([...params], [['charset', 'utf-8'],['goal', 'module']]);
+assert.deepStrictEqual([...params], [['charset', 'utf-8'], ['goal', 'module']]);
 assert.strictEqual(JSON.stringify(mime), JSON.stringify('text/javascript;charset=utf-8;goal=module'));
 assert.strictEqual(`${mime}`, 'text/javascript;charset=utf-8;goal=module');
 
 params.set(`${WHITESPACES}goal`, 'module');
 assert.strictEqual(params.has('goal'), true);
 assert.strictEqual(params.get('goal'), 'module');
-assert.deepStrictEqual([...params], [['charset', 'utf-8'],['goal', 'module']]);
+assert.deepStrictEqual([...params], [['charset', 'utf-8'], ['goal', 'module']]);
 assert.strictEqual(JSON.stringify(mime), JSON.stringify('text/javascript;charset=utf-8;goal=module'));
 assert.strictEqual(`${mime}`, 'text/javascript;charset=utf-8;goal=module');
 
 params.set('charset', 'iso-8859-1');
 assert.strictEqual(params.has('charset'), true);
 assert.strictEqual(params.get('charset'), 'iso-8859-1');
-assert.deepStrictEqual([...params], [['charset', 'iso-8859-1'],['goal','module']]);
+assert.deepStrictEqual([...params], [['charset', 'iso-8859-1'], ['goal', 'module']]);
 assert.strictEqual(JSON.stringify(mime), JSON.stringify('text/javascript;charset=iso-8859-1;goal=module'));
 assert.strictEqual(`${mime}`, 'text/javascript;charset=iso-8859-1;goal=module');
 

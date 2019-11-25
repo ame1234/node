@@ -2,7 +2,7 @@
 
 require('../common');
 const assert = require('assert');
-const { MIME } = require('mime');
+const { MIME } = require('util');
 const fixtures = require('../common/fixtures');
 
 function test(mimes) {
@@ -18,6 +18,6 @@ function test(mimes) {
   }
 }
 
-// these come from https://github.com/web-platform-tests/wpt/tree/master/mimesniff/mime-types/resources
+// These come from https://github.com/web-platform-tests/wpt/tree/master/mimesniff/mime-types/resources
 test(require(fixtures.path('./mime-whatwg.js')));
 test(require(fixtures.path('./mime-whatwg-generated.js')));
