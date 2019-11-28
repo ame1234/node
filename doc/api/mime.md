@@ -68,7 +68,7 @@ Gets and sets the type portion of the MIME.
 ```js
 const myMIME = new MIME('text/javascript');
 console.log(myMIME.type);
-// Prints text
+// Prints: text
 
 myMIME.type = 'application';
 console.log(myMIME.type);
