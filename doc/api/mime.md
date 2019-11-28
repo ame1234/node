@@ -17,7 +17,8 @@ A MIME string is a structured string containing multiple meaningful components.
 When parsed, a MIME object is returned containing properties for each of these
 components.
 
-The `mime` module provides a single API for working with MIMEs based upon the [WHATWG MIME Standard](https://mimesniff.spec.whatwg.org/).
+The `mime` module provides a single API for working with MIMEs based upon the
+[WHATWG MIME Standard](https://mimesniff.spec.whatwg.org/).
 
 Parsing a MIME string using the WHATWG parsing algorithm:
 
