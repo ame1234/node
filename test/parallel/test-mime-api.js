@@ -2,7 +2,7 @@
 
 require('../common');
 const assert = require('assert');
-const { MIME } = require('mime');
+const { MIME, MIMEParams } = require('util');
 
 
 const WHITESPACES = '\t\n\f\r ';
@@ -24,7 +24,9 @@ for (const key of Object.keys(mime_descriptors)) {
 }
 
 
-assert.strictEqual(JSON.stringify(mime), JSON.stringify('application/ecmascript'));
+assert.strictEqual(
+  JSON.stringify(mime),
+  JSON.stringify('application/ecmascript'));
 assert.strictEqual(`${mime}`, 'application/ecmascript');
 assert.strictEqual(mime.type, 'application');
 assert.strictEqual(mime.subtype, 'ecmascript');
@@ -40,10 +42,9 @@ assert.strictEqual(mime.type, 'text');
 assert.strictEqual(JSON.stringify(mime), JSON.stringify('text/ecmascript'));
 assert.strictEqual(`${mime}`, 'text/ecmascript');
 
-mime.type = `${WHITESPACES}text`;
-assert.strictEqual(mime.type, 'text');
-assert.strictEqual(JSON.stringify(mime), JSON.stringify('text/ecmascript'));
-assert.strictEqual(`${mime}`, 'text/ecmascript');
+assert.throws(() => {
+  mime.type = `${WHITESPACES}text`;
+}, /Invalid MIME type/);
 
 assert.throws(() => mime.type = '', /type/i);
 assert.throws(() => mime.type = '/', /type/i);
@@ -58,19 +59,26 @@ mime.subtype = 'javascript';
 assert.strictEqual(mime.type, 'text');
 assert.strictEqual(JSON.stringify(mime), JSON.stringify('text/javascript'));
 assert.strictEqual(`${mime}`, 'text/javascript');
+assert.strictEqual(`${mime.params}`, '');
+assert.strictEqual(`${mime.params}`, `${new MIMEParams()}`);
+assert.strictEqual(`${mime.params}`, `${new MIMEParams(mime.params)}`);
+assert.strictEqual(`${mime.params}`, `${new MIMEParams(`${mime.params}`)}`);
 
-mime.subtype = `javascript${WHITESPACES}`;
-assert.strictEqual(mime.type, 'text');
-assert.strictEqual(JSON.stringify(mime), JSON.stringify('text/javascript'));
-assert.strictEqual(`${mime}`, 'text/javascript');
+assert.throws(() => {
+  mime.subtype = `javascript${WHITESPACES}`;
+}, /Invalid MIME subtype/);
 
 assert.throws(() => mime.subtype = '', /subtype/i);
 assert.throws(() => mime.subtype = ';', /subtype/i);
 assert.throws(() => mime.subtype = 'x;', /subtype/i);
 assert.throws(() => mime.subtype = ';x', /subtype/i);
 assert.throws(() => mime.subtype = NOT_HTTP_TOKEN_CODE_POINT, /subtype/i);
-assert.throws(() => mime.subtype = `${NOT_HTTP_TOKEN_CODE_POINT};`, /subtype/i);
-assert.throws(() => mime.subtype = `;${NOT_HTTP_TOKEN_CODE_POINT}`, /subtype/i);
+assert.throws(
+  () => mime.subtype = `${NOT_HTTP_TOKEN_CODE_POINT};`,
+  /subtype/i);
+assert.throws(
+  () => mime.subtype = `;${NOT_HTTP_TOKEN_CODE_POINT}`,
+  /subtype/i);
 
 
 const params = mime.params;
@@ -78,36 +86,58 @@ params.set('charset', 'utf-8');
 assert.strictEqual(params.has('charset'), true);
 assert.strictEqual(params.get('charset'), 'utf-8');
 assert.deepStrictEqual([...params], [['charset', 'utf-8']]);
-assert.strictEqual(JSON.stringify(mime), JSON.stringify('text/javascript;charset=utf-8'));
+assert.strictEqual(
+  JSON.stringify(mime),
+  JSON.stringify('text/javascript;charset=utf-8'));
 assert.strictEqual(`${mime}`, 'text/javascript;charset=utf-8');
+assert.strictEqual(`${mime.params}`, 'charset=utf-8');
+assert.strictEqual(`${mime.params}`, `${new MIMEParams(mime.params)}`);
+assert.strictEqual(`${mime.params}`, `${new MIMEParams(`${mime.params}`)}`);
 
 params.set('goal', 'module');
 assert.strictEqual(params.has('goal'), true);
 assert.strictEqual(params.get('goal'), 'module');
 assert.deepStrictEqual([...params], [['charset', 'utf-8'], ['goal', 'module']]);
-assert.strictEqual(JSON.stringify(mime), JSON.stringify('text/javascript;charset=utf-8;goal=module'));
+assert.strictEqual(
+  JSON.stringify(mime),
+  JSON.stringify('text/javascript;charset=utf-8;goal=module'));
 assert.strictEqual(`${mime}`, 'text/javascript;charset=utf-8;goal=module');
+assert.strictEqual(`${mime.params}`, 'charset=utf-8;goal=module');
+assert.strictEqual(`${mime.params}`, `${new MIMEParams(mime.params)}`);
+assert.strictEqual(`${mime.params}`, `${new MIMEParams(`${mime.params}`)}`);
 
-params.set(`${WHITESPACES}goal`, 'module');
-assert.strictEqual(params.has('goal'), true);
-assert.strictEqual(params.get('goal'), 'module');
-assert.deepStrictEqual([...params], [['charset', 'utf-8'], ['goal', 'module']]);
-assert.strictEqual(JSON.stringify(mime), JSON.stringify('text/javascript;charset=utf-8;goal=module'));
-assert.strictEqual(`${mime}`, 'text/javascript;charset=utf-8;goal=module');
+assert.throws(() => {
+  params.set(`${WHITESPACES}goal`, 'module');
+}, /Invalid MIME parameter name/);
 
 params.set('charset', 'iso-8859-1');
 assert.strictEqual(params.has('charset'), true);
 assert.strictEqual(params.get('charset'), 'iso-8859-1');
-assert.deepStrictEqual([...params], [['charset', 'iso-8859-1'], ['goal', 'module']]);
-assert.strictEqual(JSON.stringify(mime), JSON.stringify('text/javascript;charset=iso-8859-1;goal=module'));
+assert.deepStrictEqual(
+  [...params],
+  [['charset', 'iso-8859-1'], ['goal', 'module']]);
+assert.strictEqual(
+  JSON.stringify(mime),
+  JSON.stringify('text/javascript;charset=iso-8859-1;goal=module'));
 assert.strictEqual(`${mime}`, 'text/javascript;charset=iso-8859-1;goal=module');
 
 params.delete('charset');
 assert.strictEqual(params.has('charset'), false);
 assert.strictEqual(params.get('charset'), null);
 assert.deepStrictEqual([...params], [['goal', 'module']]);
-assert.strictEqual(JSON.stringify(mime), JSON.stringify('text/javascript;goal=module'));
+assert.strictEqual(
+  JSON.stringify(mime),
+  JSON.stringify('text/javascript;goal=module'));
 assert.strictEqual(`${mime}`, 'text/javascript;goal=module');
+
+params.set('x', '');
+assert.strictEqual(params.has('x'), true);
+assert.strictEqual(params.get('x'), '');
+assert.deepStrictEqual([...params], [['goal', 'module'], ['x', '']]);
+assert.strictEqual(
+  JSON.stringify(mime),
+  JSON.stringify('text/javascript;goal=module;x=""'));
+assert.strictEqual(`${mime}`, 'text/javascript;goal=module;x=""');
 
 assert.throws(() => params.set('', 'x'), /parameter name/i);
 assert.throws(() => params.set('=', 'x'), /parameter name/i);
@@ -117,7 +147,6 @@ assert.throws(() => params.set(`${NOT_HTTP_TOKEN_CODE_POINT}=`, 'x'), /parameter
 assert.throws(() => params.set(`${NOT_HTTP_TOKEN_CODE_POINT}x`, 'x'), /parameter name/i);
 assert.throws(() => params.set(`x${NOT_HTTP_TOKEN_CODE_POINT}`, 'x'), /parameter name/i);
 
-assert.throws(() => params.set('x', ''), /parameter value/i);
 assert.throws(() => params.set('x', `${NOT_HTTP_QUOTED_STRING_CODE_POINT};`), /parameter value/i);
 assert.throws(() => params.set('x', `${NOT_HTTP_QUOTED_STRING_CODE_POINT}x`), /parameter value/i);
 assert.throws(() => params.set('x', `x${NOT_HTTP_QUOTED_STRING_CODE_POINT}`), /parameter value/i);
