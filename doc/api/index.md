@@ -34,7 +34,6 @@
 * [HTTPS](https.html)
 * [Inspector](inspector.html)
 * [Internationalization](intl.html)
-* [MIME](mime.html)
 * [Modules](modules.html)
 * [Net](net.html)
 * [OS](os.html)
