@@ -2566,10 +2566,10 @@ util.log('Timestamped message.');
 [default sort]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
 [global symbol registry]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/for
 [list of deprecated APIS]: deprecations.html#deprecations_list_of_deprecated_apis
-[mime.toJSON]: #util_util_class_mime_tojson
-[mime.toString]: #util_util_class_mime_tostring
-[mimeparams_iterator]: #util_util_class_mimeparams_iterator
-[mimeParams.entries]: #util_util_class_mimeparams_entries
-[mimeparams]: #util_util_class_mimeparams
+[mime.toJSON]: #util_mime_tojson
+[mime.toString]: #util_mime_tostring
+[mimeparams_iterator]: #util_mimeparams_iterator
+[mimeParams.entries]: #util_mimeparams_entries
+[mimeparams]: #util_class_util_mimeparams
 [semantically incompatible]: https://github.com/nodejs/node/issues/4179
 [util.inspect.custom]: #util_util_inspect_custom
