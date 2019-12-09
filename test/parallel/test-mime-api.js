@@ -44,7 +44,7 @@ assert.strictEqual(`${mime}`, 'text/ecmascript');
 
 assert.throws(() => {
   mime.type = `${WHITESPACES}text`;
-}, /Invalid MIME type/);
+}, /ERR_INVALID_MIME_SYNTAX/);
 
 assert.throws(() => mime.type = '', /type/i);
 assert.throws(() => mime.type = '/', /type/i);
@@ -60,13 +60,13 @@ assert.strictEqual(mime.type, 'text');
 assert.strictEqual(JSON.stringify(mime), JSON.stringify('text/javascript'));
 assert.strictEqual(`${mime}`, 'text/javascript');
 assert.strictEqual(`${mime.params}`, '');
-assert.strictEqual(`${mime.params}`, `${new MIMEParams()}`);
-assert.strictEqual(`${mime.params}`, `${new MIMEParams(mime.params)}`);
-assert.strictEqual(`${mime.params}`, `${new MIMEParams(`${mime.params}`)}`);
+assert.strictEqual(`${new MIMEParams()}`, '');
+assert.strictEqual(`${new MIMEParams(mime.params)}`, '');
+assert.strictEqual(`${new MIMEParams(`${mime.params}`)}`, '');
 
 assert.throws(() => {
   mime.subtype = `javascript${WHITESPACES}`;
-}, /Invalid MIME subtype/);
+}, /ERR_INVALID_MIME_SYNTAX/);
 
 assert.throws(() => mime.subtype = '', /subtype/i);
 assert.throws(() => mime.subtype = ';', /subtype/i);
@@ -91,8 +91,8 @@ assert.strictEqual(
   JSON.stringify('text/javascript;charset=utf-8'));
 assert.strictEqual(`${mime}`, 'text/javascript;charset=utf-8');
 assert.strictEqual(`${mime.params}`, 'charset=utf-8');
-assert.strictEqual(`${mime.params}`, `${new MIMEParams(mime.params)}`);
-assert.strictEqual(`${mime.params}`, `${new MIMEParams(`${mime.params}`)}`);
+assert.strictEqual(`${new MIMEParams(mime.params)}`, '');
+assert.strictEqual(`${new MIMEParams(`${mime.params}`)}`, '');
 
 params.set('goal', 'module');
 assert.strictEqual(params.has('goal'), true);
@@ -103,12 +103,12 @@ assert.strictEqual(
   JSON.stringify('text/javascript;charset=utf-8;goal=module'));
 assert.strictEqual(`${mime}`, 'text/javascript;charset=utf-8;goal=module');
 assert.strictEqual(`${mime.params}`, 'charset=utf-8;goal=module');
-assert.strictEqual(`${mime.params}`, `${new MIMEParams(mime.params)}`);
-assert.strictEqual(`${mime.params}`, `${new MIMEParams(`${mime.params}`)}`);
+assert.strictEqual(`${new MIMEParams(mime.params)}`, '');
+assert.strictEqual(`${new MIMEParams(`${mime.params}`)}`, '');
 
 assert.throws(() => {
   params.set(`${WHITESPACES}goal`, 'module');
-}, /Invalid MIME parameter name/);
+}, /ERR_INVALID_MIME_SYNTAX/);
 
 params.set('charset', 'iso-8859-1');
 assert.strictEqual(params.has('charset'), true);

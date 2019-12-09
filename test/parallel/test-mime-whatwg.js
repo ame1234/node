@@ -7,11 +7,10 @@ const fixtures = require('../common/fixtures');
 
 function test(mimes) {
   for (const entry of mimes) {
-    console.log(entry);
     if (typeof entry === 'string') continue;
     const { input, output } = entry;
     if (output === null) {
-      assert.throws(() => new MIME(input), /Invalid MIME/i);
+      assert.throws(() => new MIME(input), /ERR_INVALID_MIME_SYNTAX/i);
     } else {
       const str = `${new MIME(input)}`;
       assert.strictEqual(str, output);

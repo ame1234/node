@@ -879,7 +879,7 @@ Otherwise, returns `false`.
 See [`assert.deepStrictEqual()`][] for more information about deep strict
 equality.
 
-## `util.MIMEType`
+## Class: `util.MIMEType`
 
 <!-- YAML
 added: REPLACEME
@@ -889,8 +889,6 @@ added: REPLACEME
 
 An implementation of [the MIME class](https://bmeck.github.io/node-proposal-mime-api/).
 
-[Examples of parsed MIMEs][] may be found in the Standard itself.
-
 In accordance with browser conventions, all properties of `MIME` objects
 are implemented as getters and setters on the class prototype, rather than as
 data properties on the object itself.
@@ -899,7 +897,7 @@ A MIME string is a structured string containing multiple meaningful components.
 When parsed, a MIME object is returned containing properties for each of these
 components.
 
-#### Constructor: `new MIMEType(input)`
+### Constructor: `new MIMEType(input)`
 
 * `input` {string} The input MIME to parse
 
@@ -955,16 +953,16 @@ console.log(myMIME.subtype);
 
 * {MIMEParams}
 
-Gets the [`MIMEParams`][] object representing the parameters of the
-MIME. This property is read-only. See [`MIMEParams`][]
-documentation for details.
+Gets the [`MIMEParams`][mimeparams] object representing the
+parameters of the MIME. This property is read-only. See
+[`MIMEParams`][mimeparams] documentation for details.
 
 #### `mime.toString()`
 
 * Returns: {string}
 
 The `toString()` method on the `MIME` object returns the serialized MIME. The
-value returned is equivalent to that of [`mime.toJSON()`][].
+value returned is equivalent to that of [`mime.toJSON()`][mime.toJSON].
 
 Because of the need for standard compliance, this method does not allow users
 to customize the serialization process of the MIME.
@@ -974,7 +972,7 @@ to customize the serialization process of the MIME.
 * Returns: {string}
 
 The `toJSON()` method on the `MIME` object returns the serialized MIME. The
-value returned is equivalent to that of [`mime.toString()`][].
+value returned is equivalent to that of [`mime.toString()`][mime.toString].
 
 This method is automatically called when an `MIME` object is serialized
 with [`JSON.stringify()`][].
@@ -988,7 +986,7 @@ console.log(JSON.stringify(myMIMES));
 // Prints: ["img/png", "img/gif"]
 ```
 
-### `util.MIMEParams`
+### Class: `util.MIMEParams`
 <!-- YAML
 added: REPLACEME
 -->
@@ -996,15 +994,12 @@ added: REPLACEME
 The `MIMEParams` API provides read and write access to the parameters of a
 `MIME`.
 
-#### Constructor: `new MIMEParams(input)`
+#### Constructor: `new MIMEParams()`
 
-* `input` {string} The input MIME parameters to parse
-
-Creates a new `MIMEParams` object by parsing the `input` without an associated
-`MIME` instance.
+Creates a new `MIMEParams` object by with empty parameters
 
 ```js
-const myParams = new MIMEParams('charset=UTF-8');
+const myParams = new MIMEParams();
 ```
 
 #### `mimeParams.delete(name)`
@@ -1021,7 +1016,7 @@ Returns an ES6 Iterator over each of the name-value pairs in the parameters.
 Each item of the iterator is a JavaScript Array. The first item of the Array
 is the `name`, the second item of the Array is the `value`.
 
-Alias for [`mimeParams[@@iterator]()`][`mimeParams@@iterator()`].
+Alias for [`mimeParams[@@iterator]()`][mimeparams_iterator].
 
 #### `mimeParams.get(name)`
 
@@ -1086,7 +1081,7 @@ Returns an ES6 Iterator over each of the name-value pairs in the query string.
 Each item of the iterator is a JavaScript Array. The first item of the Array
 is the `name`, the second item of the Array is the `value`.
 
-Alias for [`mimeParams.entries()`][].
+Alias for [`mimeParams.entries()`][mimeparams.entries].
 
 ```js
 const { params } = new MIME('text/plain;foo=bar;xyz=baz');
@@ -2531,6 +2526,7 @@ util.log('Timestamped message.');
 [`Int16Array`]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int16Array
 [`Int32Array`]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int32Array
 [`Int8Array`]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int8Array
+[`JSON.stringify()`]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify
 [`Map`]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map
 [`Object.assign()`]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign
 [`Promise`]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
@@ -2570,5 +2566,10 @@ util.log('Timestamped message.');
 [default sort]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
 [global symbol registry]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/for
 [list of deprecated APIS]: deprecations.html#deprecations_list_of_deprecated_apis
+[mime.toJSON]: #util_util_class_mime_tojson
+[mime.toString]: #util_util_class_mime_tostring
+[mimeparams_iterator]: #util_util_class_mimeparams_iterator
+[mimeParams.entries]: #util_util_class_mimeparams_entries
+[mimeparams]: #util_util_class_mimeparams
 [semantically incompatible]: https://github.com/nodejs/node/issues/4179
 [util.inspect.custom]: #util_util_inspect_custom
