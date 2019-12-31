@@ -887,24 +887,24 @@ added: REPLACEME
 
 > Stability: 1 - Experimental
 
-An implementation of [the MIME class](https://bmeck.github.io/node-proposal-mime-api/).
+An implementation of [the MIMEType class](https://bmeck.github.io/node-proposal-mime-api/).
 
-In accordance with browser conventions, all properties of `MIME` objects
+In accordance with browser conventions, all properties of `MIMEType` objects
 are implemented as getters and setters on the class prototype, rather than as
 data properties on the object itself.
 
 A MIME string is a structured string containing multiple meaningful components.
-When parsed, a MIME object is returned containing properties for each of these
+When parsed, a `MIMEType` object is returned containing properties for each of these
 components.
 
 ### Constructor: `new MIMEType(input)`
 
 * `input` {string} The input MIME to parse
 
-Creates a new `MIME` object by parsing the `input`.
+Creates a new `MIMEType` object by parsing the `input`.
 
 ```js
-const myMIME = new MIME('text/plain');
+const myMIME = new MIMEType('text/plain');
 ```
 
 A `TypeError` will be thrown if the `input` is not a valid MIME. Note
@@ -912,7 +912,7 @@ that an effort will be made to coerce the given values into strings. For
 instance:
 
 ```js
-const myMIME = new MIME({ toString: () => 'text/plain' });
+const myMIME = new MIMEType({ toString: () => 'text/plain' });
 console.log(String(myMIME));
 // Prints: text/plain
 ```
@@ -924,7 +924,7 @@ console.log(String(myMIME));
 Gets and sets the type portion of the MIME.
 
 ```js
-const myMIME = new MIME('text/javascript');
+const myMIME = new MIMEType('text/javascript');
 console.log(myMIME.type);
 // Prints: text
 
@@ -940,13 +940,30 @@ console.log(myMIME.type);
 Gets and sets the subtype portion of the MIME.
 
 ```js
-const myMIME = new MIME('text/ecmascript');
+const myMIME = new MIMEType('text/ecmascript');
 console.log(myMIME.subtype);
 // Prints: ecmascript
 
 myMIME.subtype = 'javascript';
 console.log(myMIME.subtype);
 // Prints: javascript
+```
+
+#### mime.essence
+
+* {string}
+
+Gets the essence of the MIME. This property is read only.
+Use `mime.type` or `mime.subtype` to alter the MIME.
+
+```js
+const myMIME = new MIMEType('text/javascript');
+console.log(myMIME.essence);
+// Prints: text/javascript
+
+myMIME.type = 'application';
+console.log(myMIME.essence);
+// Prints: application/javascript
 ```
 
 #### `mime.params`
@@ -961,7 +978,7 @@ parameters of the MIME. This property is read-only. See
 
 * Returns: {string}
 
-The `toString()` method on the `MIME` object returns the serialized MIME. The
+The `toString()` method on the `MIMEType` object returns the serialized MIME. The
 value returned is equivalent to that of [`mime.toJSON()`][mime.toJSON].
 
 Because of the need for standard compliance, this method does not allow users
@@ -971,16 +988,16 @@ to customize the serialization process of the MIME.
 
 * Returns: {string}
 
-The `toJSON()` method on the `MIME` object returns the serialized MIME. The
+The `toJSON()` method on the `MIMEType` object returns the serialized MIME. The
 value returned is equivalent to that of [`mime.toString()`][mime.toString].
 
-This method is automatically called when an `MIME` object is serialized
+This method is automatically called when an `MIMEType` object is serialized
 with [`JSON.stringify()`][].
 
 ```js
 const myMIMES = [
-  new MIME('img/png'),
-  new MIME('img/gif')
+  new MIMEType('img/png'),
+  new MIMEType('img/gif')
 ];
 console.log(JSON.stringify(myMIMES));
 // Prints: ["img/png", "img/gif"]
@@ -992,7 +1009,7 @@ added: REPLACEME
 -->
 
 The `MIMEParams` API provides read and write access to the parameters of a
-`MIME`.
+`MIMEType`.
 
 #### Constructor: `new MIMEParams()`
 
@@ -1041,7 +1058,7 @@ Returns `true` if there is at least one name-value pair whose name is `name`.
 Returns an ES6 Iterator over the names of each name-value pair.
 
 ```js
-const { params } = new MIME('text/plain;foo=0;bar=1');
+const { params } = new MIMEType('text/plain;foo=0;bar=1');
 for (const name of params.keys()) {
   console.log(name);
 }
@@ -1060,7 +1077,7 @@ Sets the value in the `MIMEParams` object associated with `name` to
 set the first such pair's value to `value`.
 
 ```js
-const { params } = new MIME('text/plain;foo=0;bar=1');
+const { params } = new MIMEType('text/plain;foo=0;bar=1');
 params.set('foo', 'def');
 params.set('baz', 'xyz');
 console.log(params.toString());
@@ -1084,7 +1101,7 @@ is the `name`, the second item of the Array is the `value`.
 Alias for [`mimeParams.entries()`][mimeparams.entries].
 
 ```js
-const { params } = new MIME('text/plain;foo=bar;xyz=baz');
+const { params } = new MIMEType('text/plain;foo=bar;xyz=baz');
 for (const [name, value] of params) {
   console.log(name, value);
 }

@@ -2,14 +2,14 @@
 
 require('../common');
 const assert = require('assert');
-const { MIME, MIMEParams } = require('util');
+const { MIMEType, MIMEParams } = require('util');
 
 
 const WHITESPACES = '\t\n\f\r ';
 const NOT_HTTP_TOKEN_CODE_POINT = ',';
 const NOT_HTTP_QUOTED_STRING_CODE_POINT = '\n';
 
-const mime = new MIME('application/ecmascript; ');
+const mime = new MIMEType('application/ecmascript; ');
 const mime_descriptors = Object.getOwnPropertyDescriptors(mime);
 const mime_proto = Object.getPrototypeOf(mime);
 const mime_impersonator = Object.create(mime_proto);
@@ -28,6 +28,7 @@ assert.strictEqual(
   JSON.stringify(mime),
   JSON.stringify('application/ecmascript'));
 assert.strictEqual(`${mime}`, 'application/ecmascript');
+assert.strictEqual(mime.essence, 'application/ecmascript');
 assert.strictEqual(mime.type, 'application');
 assert.strictEqual(mime.subtype, 'ecmascript');
 assert.ok(mime.params);
@@ -41,6 +42,7 @@ mime.type = 'text';
 assert.strictEqual(mime.type, 'text');
 assert.strictEqual(JSON.stringify(mime), JSON.stringify('text/ecmascript'));
 assert.strictEqual(`${mime}`, 'text/ecmascript');
+assert.strictEqual(mime.essence, 'text/ecmascript');
 
 assert.throws(() => {
   mime.type = `${WHITESPACES}text`;
@@ -59,6 +61,7 @@ mime.subtype = 'javascript';
 assert.strictEqual(mime.type, 'text');
 assert.strictEqual(JSON.stringify(mime), JSON.stringify('text/javascript'));
 assert.strictEqual(`${mime}`, 'text/javascript');
+assert.strictEqual(mime.essence, 'text/javascript');
 assert.strictEqual(`${mime.params}`, '');
 assert.strictEqual(`${new MIMEParams()}`, '');
 assert.strictEqual(`${new MIMEParams(mime.params)}`, '');
@@ -90,6 +93,7 @@ assert.strictEqual(
   JSON.stringify(mime),
   JSON.stringify('text/javascript;charset=utf-8'));
 assert.strictEqual(`${mime}`, 'text/javascript;charset=utf-8');
+assert.strictEqual(mime.essence, 'text/javascript');
 assert.strictEqual(`${mime.params}`, 'charset=utf-8');
 assert.strictEqual(`${new MIMEParams(mime.params)}`, '');
 assert.strictEqual(`${new MIMEParams(`${mime.params}`)}`, '');
@@ -102,6 +106,7 @@ assert.strictEqual(
   JSON.stringify(mime),
   JSON.stringify('text/javascript;charset=utf-8;goal=module'));
 assert.strictEqual(`${mime}`, 'text/javascript;charset=utf-8;goal=module');
+assert.strictEqual(mime.essence, 'text/javascript');
 assert.strictEqual(`${mime.params}`, 'charset=utf-8;goal=module');
 assert.strictEqual(`${new MIMEParams(mime.params)}`, '');
 assert.strictEqual(`${new MIMEParams(`${mime.params}`)}`, '');
@@ -120,6 +125,7 @@ assert.strictEqual(
   JSON.stringify(mime),
   JSON.stringify('text/javascript;charset=iso-8859-1;goal=module'));
 assert.strictEqual(`${mime}`, 'text/javascript;charset=iso-8859-1;goal=module');
+assert.strictEqual(mime.essence, 'text/javascript');
 
 params.delete('charset');
 assert.strictEqual(params.has('charset'), false);
@@ -129,6 +135,7 @@ assert.strictEqual(
   JSON.stringify(mime),
   JSON.stringify('text/javascript;goal=module'));
 assert.strictEqual(`${mime}`, 'text/javascript;goal=module');
+assert.strictEqual(mime.essence, 'text/javascript');
 
 params.set('x', '');
 assert.strictEqual(params.has('x'), true);
@@ -138,6 +145,7 @@ assert.strictEqual(
   JSON.stringify(mime),
   JSON.stringify('text/javascript;goal=module;x=""'));
 assert.strictEqual(`${mime}`, 'text/javascript;goal=module;x=""');
+assert.strictEqual(mime.essence, 'text/javascript');
 
 assert.throws(() => params.set('', 'x'), /parameter name/i);
 assert.throws(() => params.set('=', 'x'), /parameter name/i);

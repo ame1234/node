@@ -2,7 +2,7 @@
 
 require('../common');
 const assert = require('assert');
-const { MIME } = require('util');
+const { MIMEType } = require('util');
 const fixtures = require('../common/fixtures');
 
 function test(mimes) {
@@ -10,9 +10,9 @@ function test(mimes) {
     if (typeof entry === 'string') continue;
     const { input, output } = entry;
     if (output === null) {
-      assert.throws(() => new MIME(input), /ERR_INVALID_MIME_SYNTAX/i);
+      assert.throws(() => new MIMEType(input), /ERR_INVALID_MIME_SYNTAX/i);
     } else {
-      const str = `${new MIME(input)}`;
+      const str = `${new MIMEType(input)}`;
       assert.strictEqual(str, output);
     }
   }
