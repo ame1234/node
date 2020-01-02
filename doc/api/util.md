@@ -949,7 +949,7 @@ console.log(myMIME.subtype);
 // Prints: javascript
 ```
 
-#### mime.essence
+#### `mime.essence`
 
 * {string}
 
