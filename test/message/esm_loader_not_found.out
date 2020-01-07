@@ -1,18 +1,25 @@
-(node:*) ExperimentalWarning: The ESM module loader is experimental.
 (node:*) ExperimentalWarning: --experimental-loader is an experimental feature. This feature could change at any time
-internal/modules/esm/resolve.js:*
-  let url = moduleWrapResolve(specifier, parentURL);
-            ^
+(node:*) ExperimentalWarning: The ESM module loader is experimental.
 
+events.js:*
+      throw er; // Unhandled 'error' event
+      ^
 Error: Cannot find package 'i-dont-exist' imported from *
-    at Loader.defaultResolve [as _resolve] (internal/modules/esm/resolve.js:*:*)
+    at defaultResolve (internal/modules/esm/resolve.js:*:*)
+    at Object.resolveImportURL (internal/modules/esm/loader.js:*:*)
     at Loader.resolve (internal/modules/esm/loader.js:*:*)
     at Loader.getModuleJob (internal/modules/esm/loader.js:*:*)
-    at Loader.import (internal/modules/esm/loader.js:*:*)
-    at internal/process/esm_loader.js:*:*
-    at Object.initializeLoader (internal/process/esm_loader.js:*:*)
-    at runMainESM (internal/modules/run_main.js:*:*)
-    at Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:*:*)
-    at internal/main/run_main_module.js:*:* {
+    at Loader.importWrapped (internal/modules/esm/loader.js:*:*)
+    at internal/modules/esm/worker.js:*:*
+    at NativeModule.compileForInternalLoader (internal/bootstrap/loaders.js:*:*)
+    at nativeModuleRequire (internal/bootstrap/loaders.js:*:*)
+    at MessagePort.<anonymous> (internal/main/worker_thread.js:*:*)
+    at MessagePort.emit (events.js:*:*)
+Emitted 'error' event on Worker instance at:
+    at Worker.[kOnErrorMessage] (internal/worker.js:*:*)
+    at Worker.[kOnMessage] (internal/worker.js:*:*)
+    at MessagePort.<anonymous> (internal/worker.js:*:*)
+    at MessagePort.emit (events.js:*:*)
+    at MessagePort.onmessage (internal/worker/io.js:*:*) {
   code: 'ERR_MODULE_NOT_FOUND'
 }
