@@ -1098,7 +1098,7 @@ a URL should be interpreted. The `format` returned also affects what the
 acceptable forms of source values are for a module when parsing. This can be one
 of the following:
 
-| `format` | Description | Acceptable Source Values |
+| `format` | Description | Acceptable Types For `source` Returned by `getSource` or `transformSource` |
 | --- | --- |
 | `'builtin'` | Load a Node.js builtin module | Not applicable |
 | `'commonjs'` | Load a Node.js CommonJS module | Not applicable |
